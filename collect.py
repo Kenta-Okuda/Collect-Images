@@ -7,10 +7,10 @@ from google_keys import key_dict
 key_dict = key_dict
 
 def url_search(keyword, count):
-    # 画像urlを拾ってくる
+    # 画像urlを取得
     img_urls = []
     base_url = "https://www.googleapis.com/customsearch/v1?key={0}&cx={1}&searchType=image&q={2}&num=10&start={3}"
-    # 一回で10個までしか取得できない
+    # 1回で10個までしか取得できない
     for i in range(count):
         start_index = i*10+1
         url = base_url.format(key_dict["api_key"], key_dict["engine_id"], keyword, start_index)
@@ -22,8 +22,8 @@ def url_search(keyword, count):
 
 
 def url_download(urls, dl_path):
-    #urlから画像をフォルダにdownload
-    print("Now downloading...")
+    #urlから画像をフォルダにダウンロード
+    print("Start downloading.")
     possible_exts = [".png", ".jpg", ".jpeg"]
     img_index = 0
     opener = urllib2.build_opener()
@@ -31,6 +31,7 @@ def url_download(urls, dl_path):
 	os.mkdir(dl_path)
     for url in set(urls):
         try:
+	    print(str(img_index)+": "+url)
             file_name, ext = os.path.splitext(url)
             if ext not in possible_exts:
                 continue
@@ -53,7 +54,7 @@ def main():
     dl_path = "images"
     urls = url_search(keyword, count)
     url_download(urls, dl_path)
-    print("End")
+    print("Done.")
 
 if __name__ == '__main__':
     main()
